@@ -33,3 +33,172 @@ const render = require("./lib/htmlRenderer");
 // for further information. Be sure to test out each class and verify it generates an
 // object with the correct structure and methods. This structure will be crucial in order
 // for the provided `render` function to work! ```
+
+
+
+// Objects to house employees
+let employees = []
+let manager = []
+let engineer = []
+let intern = []
+
+
+// Inquirer questions
+let qMain = [
+    {
+        type: 'list',
+        name: 'selection',
+        message: 'Please make a selection.',
+        choices: ['Make new Employee', 'Review Employees', 'Print and Exit']
+    }
+]
+
+let qEmployee = [
+    {
+        type: 'input',
+        name: 'name',
+        message: 'Please enter the Employee name.'
+    },
+    {
+        type: 'input',
+        name: 'id',
+        message: 'Please enter the Employee id.'
+    },
+    {
+        type: 'input',
+        name: 'email',
+        message: 'Please enter the Employee email.'
+    },
+    {
+        type: 'list',
+        name: 'position',
+        message: 'Please select the Employee position.',
+        choices: ['Manager', 'Engineer', 'Intern']
+    }
+]
+
+let qManager = [
+    {
+        type: 'input',
+        name: 'officeNumber',
+        message: 'Please enter the Manager office number.'
+    }
+]
+
+let qEngineer = [
+    {
+        type: 'input',
+        name: 'github',
+        message: 'Please enter the Engineer github username.'
+    }
+]
+
+let qIntern = [
+    {
+        type: 'input',
+        name: 'school',
+        message: 'Please enter the Intern school.'
+
+    }
+]
+
+
+// Position builders
+function managerBuilder(parentA) {
+    inquirer
+        .prompt(
+            qManager
+        )
+        .then(answer => {
+            manager.push(new Manager(parentA.name, parentA.id, parentA.email, answer.officeNumber))
+            console.log(manager)
+            mainMenu()
+        })
+        .catch(err => console.log(err))
+}
+
+function engineerBuilder(parentA) {
+    inquirer
+        .prompt(
+            qEngineer
+        )
+        .then(answer => {
+            engineer.push(new Engineer(parentA.name, parentA.id, parentA.email, answer.github))
+            console.log(engineer)
+            mainMenu()
+        })
+        .catch(err => console.log(err))
+}
+
+function internBuilder(parentA) {
+    inquirer
+        .prompt(
+            qIntern
+        )
+        .then(answer => {
+            intern.push(new Intern(parentA.name, parentA.id, parentA.email, answer.school))
+            console.log(intern)
+            mainMenu()
+        })
+        .catch(err => console.log(err))
+}
+
+
+
+const employeeBuilder = () => {
+    inquirer
+        .prompt(
+            qEmployee
+        )
+        .then(answer => {
+            console.log(answer)
+            switch (answer.position) {
+                case 'Manager':
+                    managerBuilder()
+                case 'Engineer':
+                    engineerBuilder()
+                case 'Intern':
+                    internBuilder()
+            }
+        })
+        .catch(err => console.log(err))
+}
+
+
+// Inquirer prompts start
+const mainMenu = () => {
+    inquirer
+        .prompt(
+            qMain
+        )
+        .then(answer => {
+            console.log(answer)
+            switch (answer.selection) {
+                case 'Make new Employee':
+                    console.log('run employee builder')
+                    employeeBuilder()
+                    break
+                case 'Review Employees':
+                    console.log('bring up employee list so far')
+                    console.log(`Managers: ${manager}`)
+                    console.log(`Engineers: ${engineer}`)
+                    console.log(`Interns: ${intern}`)
+                    mainMenu()
+                    break
+                case 'Print and Exit':
+                    console.log('Run print and exit function')
+                    console.log(`Managers: ${manager}`)
+                    console.log(`Engineers: ${engineer}`)
+                    console.log(`Interns: ${intern}`)
+                    break
+                default:
+                    console.log('something went terribly wrong')
+                    break
+            }
+        })
+        .catch(err => console.log(err))
+}
+
+
+// start of the world
+mainMenu()
