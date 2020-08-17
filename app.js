@@ -160,7 +160,6 @@ const mainMenu = () => {
                 case 'Review Employees':
                     mainMenu()
                     console.log(employees)
-                    mainMenu()
                     break
                 // Render
                 case 'Print and Exit':

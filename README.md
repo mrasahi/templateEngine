@@ -21,6 +21,8 @@ inquirer and jest are required to run this app.
 
 run `npm install` in the terminal and it will download the required apps from package.json
 
+Once the download is complete, run `node app.js` into the terminal.
+
 # Tests
 
 <img src="./assets/img/preview1.jpg" width = "100%">
