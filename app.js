@@ -36,10 +36,11 @@ const render = require("./lib/htmlRenderer");
 
 
 
-// Array to house employee objects
-let employee = []
+// Array to house employees objects
+let employees = []
 
 // Role builders
+// Manager Builder
 function managerBuilder(parentA) {
     inquirer
         .prompt([
@@ -50,13 +51,14 @@ function managerBuilder(parentA) {
             }
         ])
         .then(answer => {
-            employee.push(new Manager(parentA.name, parentA.id, parentA.email, answer.officeNumber))
+            employees.push(new Manager(parentA.name, parentA.id, parentA.email, answer.officeNumber))
             console.log('New manager added.')
             mainMenu()
         })
         .catch(err => console.log(err))
 }
 
+// Engineer Builder
 function engineerBuilder(parentA) {
     inquirer
         .prompt([
@@ -67,13 +69,14 @@ function engineerBuilder(parentA) {
             }
         ])
         .then(answer => {
-            employee.push(new Engineer(parentA.name, parentA.id, parentA.email, answer.github))
+            employees.push(new Engineer(parentA.name, parentA.id, parentA.email, answer.github))
             console.log('New engineer added.')
             mainMenu()
         })
         .catch(err => console.log(err))
 }
 
+// Intern Builder
 function internBuilder(parentA) {
     inquirer
         .prompt([
@@ -84,7 +87,7 @@ function internBuilder(parentA) {
             }
         ])
         .then(answer => {
-            employee.push(new Intern(parentA.name, parentA.id, parentA.email, answer.school))
+            employees.push(new Intern(parentA.name, parentA.id, parentA.email, answer.school))
             console.log('New intern added.')
             mainMenu()
         })
@@ -156,18 +159,15 @@ const mainMenu = () => {
                     break
                 // Check for bugs
                 case 'Review Employees':
-                    if (employee === []) {
-                        console.log('Please add an employee first.')
                         mainMenu()
                         break
-                    }
-                    console.log(employee)
+                    console.log(employees)
                     mainMenu()
                     break
                 // Render
                 case 'Print and Exit':
                     console.log('team.html is in the output folder.')
-                    fs.writeFileSync(outputPath, render(employee))
+                    fs.writeFileSync(outputPath, render(employees))
                     break
                 // This should never run
                 default:
