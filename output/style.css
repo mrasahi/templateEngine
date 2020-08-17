@@ -1,9 +1,24 @@
+body {
+    background-color: beige
+}
+
 .team-heading {
-    background-color: brown;
+    background-color: midnightblue;
     color: white
 }
 
 .card-header {
-    background-color: blue;
     color: white
+}
+
+.managerRole {
+    background-color: red
+}
+
+.engineerRole {
+    background-color: purple
+}
+
+.internRole {
+    background-color: blue
 }
