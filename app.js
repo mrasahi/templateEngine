@@ -36,12 +36,8 @@ const render = require("./lib/htmlRenderer");
 
 
 
-// Objects to house employees
-let employees = []
-let manager = []
-let engineer = []
-let intern = []
-
+// Array to house employee objects
+let employee = []
 
 // Position builders
 function managerBuilder(parentA) {
@@ -56,8 +52,8 @@ function managerBuilder(parentA) {
             ]
         )
         .then(answer => {
-            manager.push(new Manager(parentA.name, parentA.role, parentA.id, parentA.email, answer.officeNumber))
-            console.log(manager)
+            employee.push(new Manager(parentA.name, parentA.id, parentA.email, answer.officeNumber))
+            console.log(employee)
             mainMenu()
         })
         .catch(err => console.log(err))
@@ -75,8 +71,8 @@ function engineerBuilder(parentA) {
             ]
         )
         .then(answer => {
-            engineer.push(new Engineer(parentA.name, parentA.role, parentA.id, parentA.email, answer.github))
-            console.log(engineer)
+            employee.push(new Engineer(parentA.name, parentA.id, parentA.email, answer.github))
+            console.log(employee)
             mainMenu()
         })
         .catch(err => console.log(err))
@@ -94,8 +90,8 @@ function internBuilder(parentA) {
             ]
         )
         .then(answer => {
-            intern.push(new Intern(parentA.name, parentA.role, parentA.id, parentA.email, answer.school))
-            console.log(intern)
+            employee.push(new Intern(parentA.name, parentA.id, parentA.email, answer.school))
+            console.log(employee)
             mainMenu()
         })
         .catch(err => console.log(err))
@@ -134,6 +130,7 @@ const employeeBuilder = () => {
             console.log(answer)
             switch (answer.role) {
                 case 'Manager':
+                    console.log(answer)
                     managerBuilder(answer)
                     break
                 case 'Engineer':
@@ -164,20 +161,23 @@ const mainMenu = () => {
         .then(answer => {
             console.log(answer)
             switch (answer.selection) {
+                // Runs Builders
                 case 'Make new Employee':
                     console.log('run employee builder')
                     employeeBuilder()
                     break
+                // Check for bugs
                 case 'Review Employees':
                     console.log('bring up employee list so far')
-                    console.log(`Managers: ${manager}`)
-                    console.log(`Engineers: ${engineer}`)
-                    console.log(`Interns: ${intern}`)
+                    console.log(employee)
                     mainMenu()
                     break
+                // Render
                 case 'Print and Exit':
                     console.log('Run print and exit function')
+                    fs.writeFileSync(outputPath, render(employee))
                     break
+                // This should never run
                 default:
                     console.log('something went terribly wrong')
                     break
