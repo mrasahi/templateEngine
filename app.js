@@ -39,21 +39,19 @@ const render = require("./lib/htmlRenderer");
 // Array to house employee objects
 let employee = []
 
-// Position builders
+// Role builders
 function managerBuilder(parentA) {
     inquirer
-        .prompt(
-            [
-                {
-                    type: 'input',
-                    name: 'officeNumber',
-                    message: 'Please enter the Manager office number.'
-                }
-            ]
-        )
+        .prompt([
+            {
+                type: 'input',
+                name: 'officeNumber',
+                message: 'Please enter the Manager office number.'
+            }
+        ])
         .then(answer => {
             employee.push(new Manager(parentA.name, parentA.id, parentA.email, answer.officeNumber))
-            console.log(employee)
+            console.log('New manager added.')
             mainMenu()
         })
         .catch(err => console.log(err))
@@ -61,18 +59,16 @@ function managerBuilder(parentA) {
 
 function engineerBuilder(parentA) {
     inquirer
-        .prompt(
-            [
-                {
-                    type: 'input',
-                    name: 'github',
-                    message: 'Please enter the Engineer github username.'
-                }
-            ]
-        )
+        .prompt([
+            {
+                type: 'input',
+                name: 'github',
+                message: 'Please enter the Engineer github username.'
+            }
+        ])
         .then(answer => {
             employee.push(new Engineer(parentA.name, parentA.id, parentA.email, answer.github))
-            console.log(employee)
+            console.log('New engineer added.')
             mainMenu()
         })
         .catch(err => console.log(err))
@@ -80,18 +76,16 @@ function engineerBuilder(parentA) {
 
 function internBuilder(parentA) {
     inquirer
-        .prompt(
-            [
-                {
-                    type: 'input',
-                    name: 'school',
-                    message: 'Please enter the Intern school.'
-                }
-            ]
-        )
+        .prompt([
+            {
+                type: 'input',
+                name: 'school',
+                message: 'Please enter the Intern school.'
+            }
+        ])
         .then(answer => {
             employee.push(new Intern(parentA.name, parentA.id, parentA.email, answer.school))
-            console.log(employee)
+            console.log('New intern added.')
             mainMenu()
         })
         .catch(err => console.log(err))
@@ -101,36 +95,32 @@ function internBuilder(parentA) {
 
 const employeeBuilder = () => {
     inquirer
-        .prompt(
-            [
-                {
-                    type: 'input',
-                    name: 'name',
-                    message: 'Please enter the Employee name.'
-                },
-                {
-                    type: 'input',
-                    name: 'id',
-                    message: 'Please enter the Employee id.'
-                },
-                {
-                    type: 'input',
-                    name: 'email',
-                    message: 'Please enter the Employee email.'
-                },
-                {
-                    type: 'list',
-                    name: 'role',
-                    message: 'Please select the Employee role.',
-                    choices: ['Manager', 'Engineer', 'Intern']
-                }
-            ]
-        )
+        .prompt([
+            {
+                type: 'list',
+                name: 'role',
+                message: 'Please select the Employee role.',
+                choices: ['Manager', 'Engineer', 'Intern']
+            },
+            {
+                type: 'input',
+                name: 'name',
+                message: 'Please enter the Employee name.'
+            },
+            {
+                type: 'input',
+                name: 'id',
+                message: 'Please enter the Employee id.'
+            },
+            {
+                type: 'input',
+                name: 'email',
+                message: 'Please enter the Employee email.'
+            }
+        ])
         .then(answer => {
-            console.log(answer)
             switch (answer.role) {
                 case 'Manager':
-                    console.log(answer)
                     managerBuilder(answer)
                     break
                 case 'Engineer':
@@ -148,16 +138,14 @@ const employeeBuilder = () => {
 // Inquirer prompts start
 const mainMenu = () => {
     inquirer
-        .prompt(
-            [
+        .prompt([
                 {
                     type: 'list',
                     name: 'selection',
                     message: 'Please make a selection.',
                     choices: ['Make new Employee', 'Review Employees', 'Print and Exit']
                 }
-            ]
-        )
+        ])
         .then(answer => {
             console.log(answer)
             switch (answer.selection) {
@@ -168,13 +156,17 @@ const mainMenu = () => {
                     break
                 // Check for bugs
                 case 'Review Employees':
-                    console.log('bring up employee list so far')
+                    if (employee === []) {
+                        console.log('Please add an employee first.')
+                        mainMenu()
+                        break
+                    }
                     console.log(employee)
                     mainMenu()
                     break
                 // Render
                 case 'Print and Exit':
-                    console.log('Run print and exit function')
+                    console.log('team.html is in the output folder.')
                     fs.writeFileSync(outputPath, render(employee))
                     break
                 // This should never run
