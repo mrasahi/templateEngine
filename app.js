@@ -43,31 +43,6 @@ let engineer = []
 let intern = []
 
 
-// Inquirer questions
-let qEmployee = [
-    {
-        type: 'input',
-        name: 'name',
-        message: 'Please enter the Employee name.'
-    },
-    {
-        type: 'input',
-        name: 'id',
-        message: 'Please enter the Employee id.'
-    },
-    {
-        type: 'input',
-        name: 'email',
-        message: 'Please enter the Employee email.'
-    },
-    {
-        type: 'list',
-        name: 'position',
-        message: 'Please select the Employee position.',
-        choices: ['Manager', 'Engineer', 'Intern']
-    }
-]
-
 // Position builders
 function managerBuilder(parentA) {
     inquirer
@@ -81,7 +56,7 @@ function managerBuilder(parentA) {
             ]
         )
         .then(answer => {
-            manager.push(new Manager(parentA.name, parentA.id, parentA.email, answer.officeNumber))
+            manager.push(new Manager(parentA.name, parentA.role, parentA.id, parentA.email, answer.officeNumber))
             console.log(manager)
             mainMenu()
         })
@@ -100,7 +75,7 @@ function engineerBuilder(parentA) {
             ]
         )
         .then(answer => {
-            engineer.push(new Engineer(parentA.name, parentA.id, parentA.email, answer.github))
+            engineer.push(new Engineer(parentA.name, parentA.role, parentA.id, parentA.email, answer.github))
             console.log(engineer)
             mainMenu()
         })
@@ -115,12 +90,11 @@ function internBuilder(parentA) {
                     type: 'input',
                     name: 'school',
                     message: 'Please enter the Intern school.'
-            
                 }
             ]
         )
         .then(answer => {
-            intern.push(new Intern(parentA.name, parentA.id, parentA.email, answer.school))
+            intern.push(new Intern(parentA.name, parentA.role, parentA.id, parentA.email, answer.school))
             console.log(intern)
             mainMenu()
         })
@@ -132,11 +106,33 @@ function internBuilder(parentA) {
 const employeeBuilder = () => {
     inquirer
         .prompt(
-            qEmployee
+            [
+                {
+                    type: 'input',
+                    name: 'name',
+                    message: 'Please enter the Employee name.'
+                },
+                {
+                    type: 'input',
+                    name: 'id',
+                    message: 'Please enter the Employee id.'
+                },
+                {
+                    type: 'input',
+                    name: 'email',
+                    message: 'Please enter the Employee email.'
+                },
+                {
+                    type: 'list',
+                    name: 'role',
+                    message: 'Please select the Employee role.',
+                    choices: ['Manager', 'Engineer', 'Intern']
+                }
+            ]
         )
         .then(answer => {
             console.log(answer)
-            switch (answer.position) {
+            switch (answer.role) {
                 case 'Manager':
                     managerBuilder(answer)
                     break
