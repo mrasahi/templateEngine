@@ -44,15 +44,6 @@ let intern = []
 
 
 // Inquirer questions
-let qMain = [
-    {
-        type: 'list',
-        name: 'selection',
-        message: 'Please make a selection.',
-        choices: ['Make new Employee', 'Review Employees', 'Print and Exit']
-    }
-]
-
 let qEmployee = [
     {
         type: 'input',
@@ -77,37 +68,17 @@ let qEmployee = [
     }
 ]
 
-let qManager = [
-    {
-        type: 'input',
-        name: 'officeNumber',
-        message: 'Please enter the Manager office number.'
-    }
-]
-
-let qEngineer = [
-    {
-        type: 'input',
-        name: 'github',
-        message: 'Please enter the Engineer github username.'
-    }
-]
-
-let qIntern = [
-    {
-        type: 'input',
-        name: 'school',
-        message: 'Please enter the Intern school.'
-
-    }
-]
-
-
 // Position builders
 function managerBuilder(parentA) {
     inquirer
         .prompt(
-            qManager
+            [
+                {
+                    type: 'input',
+                    name: 'officeNumber',
+                    message: 'Please enter the Manager office number.'
+                }
+            ]
         )
         .then(answer => {
             manager.push(new Manager(parentA.name, parentA.id, parentA.email, answer.officeNumber))
@@ -120,7 +91,13 @@ function managerBuilder(parentA) {
 function engineerBuilder(parentA) {
     inquirer
         .prompt(
-            qEngineer
+            [
+                {
+                    type: 'input',
+                    name: 'github',
+                    message: 'Please enter the Engineer github username.'
+                }
+            ]
         )
         .then(answer => {
             engineer.push(new Engineer(parentA.name, parentA.id, parentA.email, answer.github))
@@ -133,7 +110,14 @@ function engineerBuilder(parentA) {
 function internBuilder(parentA) {
     inquirer
         .prompt(
-            qIntern
+            [
+                {
+                    type: 'input',
+                    name: 'school',
+                    message: 'Please enter the Intern school.'
+            
+                }
+            ]
         )
         .then(answer => {
             intern.push(new Intern(parentA.name, parentA.id, parentA.email, answer.school))
@@ -154,11 +138,14 @@ const employeeBuilder = () => {
             console.log(answer)
             switch (answer.position) {
                 case 'Manager':
-                    managerBuilder()
+                    managerBuilder(answer)
+                    break
                 case 'Engineer':
-                    engineerBuilder()
+                    engineerBuilder(answer)
+                    break
                 case 'Intern':
-                    internBuilder()
+                    internBuilder(answer)
+                    break
             }
         })
         .catch(err => console.log(err))
@@ -169,7 +156,14 @@ const employeeBuilder = () => {
 const mainMenu = () => {
     inquirer
         .prompt(
-            qMain
+            [
+                {
+                    type: 'list',
+                    name: 'selection',
+                    message: 'Please make a selection.',
+                    choices: ['Make new Employee', 'Review Employees', 'Print and Exit']
+                }
+            ]
         )
         .then(answer => {
             console.log(answer)
@@ -187,9 +181,6 @@ const mainMenu = () => {
                     break
                 case 'Print and Exit':
                     console.log('Run print and exit function')
-                    console.log(`Managers: ${manager}`)
-                    console.log(`Engineers: ${engineer}`)
-                    console.log(`Interns: ${intern}`)
                     break
                 default:
                     console.log('something went terribly wrong')
