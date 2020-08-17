@@ -154,13 +154,11 @@ const mainMenu = () => {
             switch (answer.selection) {
                 // Runs Builders
                 case 'Make new Employee':
-                    console.log('run employee builder')
                     employeeBuilder()
                     break
                 // Check for bugs
                 case 'Review Employees':
-                        mainMenu()
-                        break
+                    mainMenu()
                     console.log(employees)
                     mainMenu()
                     break
